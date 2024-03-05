@@ -1,0 +1,7 @@
+entity_type: 
+    entity: block_content
+    type: "form"
+    info: 'YG remote Feedback'
+    status: 1
+    field_webform:
+        uuid: yg_remote_feedback_form
