@@ -12,7 +12,7 @@ use Drupal\webform\Entity\Webform;
  * @return string
  *   The path to the generated CSS file.
  */
-function biz_feedback_form_generate_dynamic_css($third_party_settings) {
+function remote_feedback_form_generate_dynamic_css($third_party_settings) {
   // Get color settings or use defaults if not set.
   $color_button_inactive = $third_party_settings['color_button_inactive'] ?? '#00616D';
   $color_button_active = $third_party_settings['color_button_active'] ?? '#00454E';
@@ -30,7 +30,7 @@ function biz_feedback_form_generate_dynamic_css($third_party_settings) {
   ";
 
   // Save the content to a temporary CSS file.
-  $module_path = \Drupal::service('extension.list.module')->getPath('biz_feedback_form');
+  $module_path = \Drupal::service('extension.list.module')->getPath('remote_feedback_form');
   $file_path = $module_path . '/css/variables.css';
   file_put_contents($file_path, $css_content);
   \Drupal::logger('Remote feedback')->info($css_content);
@@ -40,7 +40,7 @@ function biz_feedback_form_generate_dynamic_css($third_party_settings) {
 /**
  * Implements hook_form_alter().
  */
-function biz_feedback_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function remote_feedback_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Check if the form is the specific webform to add styles and scripts.
   if (strpos($form_id, "yg_remote_feedback_form") !== false ) {
     // Load current webform entity and its third party settings.
@@ -52,16 +52,16 @@ function biz_feedback_form_form_alter(&$form, FormStateInterface $form_state, $f
     $form['#attached']['drupalSettings']['color_settings'] = $third_party_settings;
 
     // Attach library to the form.
-    $form['#attached']['library'][] = 'biz_feedback_form/feedback-form';
+    $form['#attached']['library'][] = 'remote_feedback_form/feedback-form';
   }
   
   if($form_id == 'webform_handler_form' && $form['#webform_id'] == 'yg_remote_feedback_form'){	 
-	  $form['#validate'][] = 'biz_feedback_form_validate_url_post';
+	  $form['#validate'][] = 'remote_feedback_form_validate_url_post';
 	  $form['settings']['completed']['completed_url']['#description'] = $form['settings']['completed']['completed_url']['#description'] .'. '. t('Consider only HTTPS protocol will be allowed.');
   }
 
   if($form_id == 'webform_settings_form' && $form['general_settings']['id']['#value'] == 'yg_remote_feedback_form'){
-	  $form['#validate'][] = '_biz_feedback_form_submit_clear_cache';
+	  $form['#validate'][] = '_remote_feedback_form_submit_clear_cache';
   }
   
 
@@ -69,7 +69,7 @@ function biz_feedback_form_form_alter(&$form, FormStateInterface $form_state, $f
 /**
  * Custom validation function for the Remote post form.
  */
-function biz_feedback_form_validate_url_post(&$form, FormStateInterface $form_state){
+function remote_feedback_form_validate_url_post(&$form, FormStateInterface $form_state){
 	//$form['settings']['completed']['completed_url']['#default_value']
 	$url_value = $form_state->getValue('completed_url');
 	// Check if the URL does not start with "https://".
@@ -81,7 +81,7 @@ function biz_feedback_form_validate_url_post(&$form, FormStateInterface $form_st
 /**
  * Implements hook_webform_third_party_settings_form_alter().
  */
-function biz_feedback_form_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state,$form_id) {
+function remote_feedback_form_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state,$form_id) {
   // Load the current webform entity and its third-party settings.
   $webform = $form_state->getFormObject()->getEntity();
   $webform_id = $webform->id();
@@ -115,7 +115,7 @@ function biz_feedback_form_webform_third_party_settings_form_alter(array &$form,
 	 }
 }
 
-function _biz_feedback_form_submit_clear_cache(&$form, FormStateInterface $form_state) {
+function _remote_feedback_form_submit_clear_cache(&$form, FormStateInterface $form_state) {
 
   	if(isset($form['third_party_settings']['color_settings'])){
 	  	// Generate dynamic CSS file.	  	 
@@ -130,7 +130,7 @@ function _biz_feedback_form_submit_clear_cache(&$form, FormStateInterface $form_
 
 $third_party['color_icon_inactive'] = isset($third_party_settings['color_icon_inactive']['#value']) ?  $third_party_settings['color_icon_inactive']['#value'] :$third_party_settings['color_icon_inactive']['#default_value'];
   			 
-	  	$css_file = biz_feedback_form_generate_dynamic_css($third_party);
+	  	$css_file = remote_feedback_form_generate_dynamic_css($third_party);
 
   	}
 
@@ -143,7 +143,7 @@ $third_party['color_icon_inactive'] = isset($third_party_settings['color_icon_in
 /**
  * Implements hook_modules_uninstalled().
  */
-function biz_feedback_form_uninstall() {
+function remote_feedback_form_uninstall() {
 	// Delete the webform by its ID.
   $webform_id = 'yg_remote_feedback_form'; // ID of the webform to delete
 

@@ -1,5 +1,5 @@
 {
-  "name": "bizont/biz_feedback_form",
+  "name": "ytgov/remote_feedback_form",
   "description": "Module to implement a feedback form",
   "type": "drupal-custom-module",
   "license": "GPL-2.0-or-later",

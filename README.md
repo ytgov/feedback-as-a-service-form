@@ -40,12 +40,12 @@ This module depends on the following contributed modules:
 2. Extract the module files into your Drupal modules directory (/modules/custom).
 3. Enable the module through the Drupal administration interface or by using Drush: 
     ```
-   drush pm-enable biz_feedback_form
+   drush pm-enable remote_feedback_form
     ```
 5. Ensure that all required dependencies are installed and enabled. If not, download and enable them following the aforementioned process in step 3.
 6. To generate the block content, run the following command. You will be able to view it in /admin/content/block
     ```
-    drush yaml-content-import-module biz_feedback_form
+    drush yaml-content-import-module remote_feedback_form
     ```
 
 

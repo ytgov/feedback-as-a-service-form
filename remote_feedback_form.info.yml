@@ -4,7 +4,7 @@ core_version_requirement: ^9.4 || ^10
 package: Bizont
 type: module
 libraries:
-  - biz_feedback_form/feedback-form
+  - remote_feedback_form/feedback-form
 dependencies:
   - drupal:webform
   - drupal:locale
