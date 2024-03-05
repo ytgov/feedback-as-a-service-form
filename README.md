@@ -47,7 +47,7 @@ This module depends on the following contributed modules:
     ```
     drush yaml-content-import-module remote_feedback_form
     ```
-
+7. One essential thing is that the module must have permission to update the variable.css file, as it is required for customizing CSS.
 
 ## CONFIGURATION
 
