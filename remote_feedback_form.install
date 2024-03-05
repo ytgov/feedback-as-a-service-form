@@ -3,7 +3,7 @@
 use Drupal\webform\Entity\Webform;
 
 /**
- * Implements hook_modules_uninstalled().
+ * Implements hook_uninstall().
  */
 function remote_feedback_form_uninstall() {
   // Delete the webform by its ID.
