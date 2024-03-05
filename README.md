@@ -13,7 +13,7 @@ The Remote Feedback Form module generates a form adhering to YG guidelines. This
 
 The primary purpose of this module is to:
 
-- ***Build/Publish**:  Create a generic feedback form.
+- **Build/Publish**:  Create a generic feedback form.
 - **Collect**: Gather and transmit all comments to an API.
 
 Goals:
