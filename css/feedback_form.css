@@ -64,7 +64,8 @@ form.webform-submission-yg-remote-feedback-form-form  div.form-type-textarea > d
 
 
 .webform-submission-yg-remote-feedback-form-form .webform-button--submit,
-.webform-submission-yg-remote-feedback-form-form .webform-button--submit:focus{
+.webform-submission-yg-remote-feedback-form-form .webform-button--submit:focus,
+.webform-submission-yg-remote-feedback-form-form input#edit-actions-submit{
     padding: 15px 30px;
     color: #fff;
     background-color: var(--color-button-inactive);
@@ -87,11 +88,12 @@ form.webform-submission-yg-remote-feedback-form-form  div.form-type-textarea > d
     font-family: Montserrat,Helvetica,Arial,sans-serif;
 }
 .webform-submission-yg-remote-feedback-form-form .webform-button--submit:active,
-.webform-submission-yg-remote-feedback-form-form .webform-button--submit:hover{
+.webform-submission-yg-remote-feedback-form-form .webform-button--submit:hover,
+.webform-submission-yg-remote-feedback-form-form input#edit-actions-submit:active,
+.webform-submission-yg-remote-feedback-form-form input#edit-actions-submit:hover{
     color: #fff;
     background-color: var(--color-button-active);
     border-color: var(--color-button-active);
     border: 1px solid transparent;
     font-weight: 400;
 }
-
