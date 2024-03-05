@@ -9,12 +9,12 @@
 
 ## INTRODUCTION
 
-The Remote Feedback Form module generates a form adhering to YG guidelines. This webform is designed to connect to an external API, facilitating the transmission of emails to the respective departments through an API integration.
+The Remote Feedback Form module generates a form adhering to YG guidelines. This webform is designed to connect to an external API, facilitating the transmission of emails to the respective departments through API integration.
 
 The primary purpose of this module is to:
 
-- **Build/Publish: ** Create a generic feedback form.
-- **Collect**Gather all comments and transmit them to an API.
+- ****Build/Publish**:  Create a generic feedback form.
+- **Collect**: Gather all comments and transmit them to an API.
 
 Goals:
 
@@ -36,7 +36,7 @@ This module depends on the following contributed modules:
 
 ## INSTALLATION
 
-1.Download the module from GitLab.
+1. Download the module from GitLab.
 2. Extract the module files into your Drupal modules directory (/modules/custom).
 3. Enable the module through the Drupal administration interface or by using Drush:    ```
     drush pm-enable biz_feedback_form
