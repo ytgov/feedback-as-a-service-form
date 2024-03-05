@@ -13,8 +13,8 @@ The Remote Feedback Form module generates a form adhering to YG guidelines. This
 
 The primary purpose of this module is to:
 
-- ****Build/Publish**:  Create a generic feedback form.
-- **Collect**: Gather all comments and transmit them to an API.
+- ***Build/Publish**:  Create a generic feedback form.
+- **Collect**: Gather and transmit all comments to an API.
 
 Goals:
 
@@ -38,11 +38,12 @@ This module depends on the following contributed modules:
 
 1. Download the module from GitLab.
 2. Extract the module files into your Drupal modules directory (/modules/custom).
-3. Enable the module through the Drupal administration interface or by using Drush:    ```
-    drush pm-enable biz_feedback_form
+3. Enable the module through the Drupal administration interface or by using Drush: 
     ```
-4. Ensure that all required dependencies are installed and enabled. If not, download and enable them following the aforementioned process in step 3.
-5. To generate the block content, run the following command. You will be able to view it in /admin/content/block
+   drush pm-enable biz_feedback_form
+    ```
+5. Ensure that all required dependencies are installed and enabled. If not, download and enable them following the aforementioned process in step 3.
+6. To generate the block content, run the following command. You will be able to view it in /admin/content/block
     ```
     drush yaml-content-import-module biz_feedback_form
     ```
@@ -62,5 +63,5 @@ This module depends on the following contributed modules:
 	 - Look for the Feedback form, click to display the other options, and select "Settings".
 	 - Select the "Emails/Handlers" tab.
 	 - Locate the remote post and click on "Edit".
-	 - Modify the URL to which you want it to be directed. It is mandatory that it is an HTTPS URL.
+	 - Modify the URL to which you want it to be directed. It must be an HTTPS URL.
 	 - In the "Advanced" tab, you can change the messages to the ones you require.
