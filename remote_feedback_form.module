@@ -1,6 +1,48 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Serialization\Yaml;
+use Drupal\webform\Plugin\WebformHandlerInterface;
+
+/**
+ * Act on a webform handler when a method is invoked.
+ *
+ * Allows module developers to implement custom logic that can executed before
+ * any webform handler method is invoked.
+ *
+ * This hook can be used to…
+ * - Conditionally enable or disable a handler.
+ * - Alter a handler's configuration.
+ * - Preprocess submission data being passed to a webform handler.
+ *
+ * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
+ *   A webform handler attached to a webform
+ * @param $method_name
+ *   The invoked method name converted to snake case.
+ * @param array $args
+ *   Argument being passed to the handler's method.
+ *
+ * @see \Drupal\webform\Plugin\WebformHandlerInterface
+ */
+function biz_feedback_form_webform_handler_invoke_alter(WebformHandlerInterface $handler, $method_name, array &$args) {
+  $webform = $handler->getWebform();
+  $webform_submission = $handler->getWebformSubmission();
+
+  $webform_id = $handler->getWebform()->id();
+  $handler_id = $handler->getHandlerId();
+  
+  if( $webform_id == 'yg_remote_feedback_form' &&  $handler_id == 'remote_post' && $method_name == 'override_settings'){
+		$handler_settings = $handler->getSettings();
+		if (isset($handler_settings["custom_data"])) {
+			$custom_data = $handler_settings["custom_data"];
+			$data_token = \Drupal::token()->replace($custom_data, ['webform_submission' => $webform_submission]);
+			$data_token = Yaml::decode($data_token);
+			$data_token['domain'] = preg_replace('/\/.*$/', '', $data_token['domain']);
+			$handler_settings["custom_data"] = Yaml::encode($data_token);
+      $handler->setSettings($handler_settings);
+    }
+  }
+}
 
 /**
  * Generates dynamic CSS file based on webform color settings.
