@@ -1,0 +1,28 @@
+{
+  "name": "ytgov/remote_feedback_form",
+  "description": "Module to implement a feedback form",
+  "type": "drupal-custom-module",
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "require": {
+    "drupal/core": "^9.4 || ^10",
+    "drupal/formblock": "2.0.x-dev@dev",
+    "drupal/fontawesome": "^2.26",
+    "drupal/token":"^1.13",
+    "drupal/yaml_content":"^1.0@alpha",
+    "drupal/webform": "6.2"
+  },
+  "require-dev": {
+    "drush/drush": "^11 || ^12"
+  },
+  "extra": {
+    "installer-paths": {
+      "web/modules/custom/{$name}": ["type:drupal-custom-module"]
+    }
+  },
+  "keywords" : [
+    "Drupal"
+  ]
+}
+
+ 

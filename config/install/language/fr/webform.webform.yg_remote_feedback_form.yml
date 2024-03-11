@@ -1,0 +1,67 @@
+uuid: f3d30abc-bedf-474f-8c21-080db6af5186
+langcode: fr
+id: yg_remote_feedback_form
+title: 'Feedback form(French)'
+elements: |-
+  '#attributes':
+    class:
+      - row
+  was_this_page_helpful:
+    '#type': radios
+    '#title': 'Avez-vous trouvé ce que vous cherchiez?'
+    '#options':
+      'Yes': '<i class="far fa-thumbs-up option-yes"></i>'
+      'No': '<i class="far fa-thumbs-down option-no"></i>'
+    '#required': true
+    '#wrapper_type': form_element
+    '#wrapper_attributes':
+      class:
+        - yes-no-options
+    '#attributes':
+      class:
+        - yes-no-trigger-wrapper
+        - ''
+      style: 'display:none;'
+    '#format': raw
+  how_can_we_improve_this_page:
+    '#type': textarea
+    '#title': 'Comment peut-on améliorer cette page?'
+    '#required': true
+    '#states':
+      visible:
+        ':input[name="was_this_page_helpful"]':
+          value: 'No'
+  how_did_this_page_help_you:
+    '#type': textarea
+    '#title': 'En quoi cette page vous a-t-elle été utile?'
+    '#required': true
+    '#states':
+      visible:
+        ':input[name="was_this_page_helpful"]':
+          value: 'Yes'
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#states':
+      visible:
+        ':input[name="was_this_page_helpful"]':
+          checked: true
+    '#submit__label': 'Soumettre vos commentaires'
+handlers:
+  remote_post:
+    label: 'Remote post'
+    settings:
+      message: '<p>Contact the administrator</p>'
+      messages:
+        -
+          code: 200
+          message: '<p>Merci d’avoir pris le temps de nous faire part de vos commentaires.</p>'
+        -
+          code: 404
+          message: '<p>Contact the administrator error</p>'
+        -
+          code: 400
+          message: '<p>Contact the administrator</p>'
+        -
+          code: 500
+          message: '<p>Contact the administrator</p>'

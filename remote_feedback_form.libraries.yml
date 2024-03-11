@@ -1,0 +1,8 @@
+feedback-form:
+  version: 1.x
+  css:
+    theme:
+      css/variables.css: {}
+      css/feedback_form.css: {}
+  js:
+    js/feedback_form.js: {}

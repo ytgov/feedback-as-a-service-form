@@ -1,0 +1,169 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Serialization\Yaml;
+use Drupal\webform\Plugin\WebformHandlerInterface;
+
+/**
+ * Act on a webform handler when a method is invoked.
+ *
+ * Allows module developers to implement custom logic that can executed before
+ * any webform handler method is invoked.
+ *
+ * This hook can be used to…
+ * - Conditionally enable or disable a handler.
+ * - Alter a handler's configuration.
+ * - Preprocess submission data being passed to a webform handler.
+ *
+ * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
+ *   A webform handler attached to a webform
+ * @param $method_name
+ *   The invoked method name converted to snake case.
+ * @param array $args
+ *   Argument being passed to the handler's method.
+ *
+ * @see \Drupal\webform\Plugin\WebformHandlerInterface
+ */
+function biz_feedback_form_webform_handler_invoke_alter(WebformHandlerInterface $handler, $method_name, array &$args) {
+  $webform = $handler->getWebform();
+  $webform_submission = $handler->getWebformSubmission();
+
+  $webform_id = $handler->getWebform()->id();
+  $handler_id = $handler->getHandlerId();
+  
+  if( $webform_id == 'yg_remote_feedback_form' &&  $handler_id == 'remote_post' && $method_name == 'override_settings'){
+		$handler_settings = $handler->getSettings();
+		if (isset($handler_settings["custom_data"])) {
+			$custom_data = $handler_settings["custom_data"];
+			$data_token = \Drupal::token()->replace($custom_data, ['webform_submission' => $webform_submission]);
+			$data_token = Yaml::decode($data_token);
+			$data_token['domain'] = preg_replace('/\/.*$/', '', $data_token['domain']);
+			$handler_settings["custom_data"] = Yaml::encode($data_token);
+      $handler->setSettings($handler_settings);
+    }
+  }
+}
+
+/**
+ * Generates dynamic CSS file based on webform color settings.
+ *
+ * @param array $third_party_settings
+ *   Array with the custom colors.
+ *
+ * @return string
+ *   The path to the generated CSS file.
+ */
+function remote_feedback_form_generate_dynamic_css(array $third_party_settings) {
+  // Get color settings or use defaults if not set.
+  $color_button_inactive = $third_party_settings['color_button_inactive'] ?? '#00616D';
+  $color_button_active = $third_party_settings['color_button_active'] ?? '#00454E';
+  $color_icon_active = $third_party_settings['color_icon_active'] ?? '#00818f';
+  $color_icon_inactive = $third_party_settings['color_icon_inactive'] ?? '#b2b3b2';
+
+  // Generate the content of the dynamic CSS file.
+  $css_content = "
+  :root {
+    --color-button-inactive: $color_button_inactive;
+    --color-button-active: $color_button_active;
+    --color-icon-active: $color_icon_active;
+    --color-icon-inactive: $color_icon_inactive;
+  }
+  ";
+
+  // Save the content to a temporary CSS file.
+  $module_path = \Drupal::service('extension.list.module')->getPath('remote_feedback_form');
+  $file_path = $module_path . '/css/variables.css';
+  file_put_contents($file_path, $css_content);
+  \Drupal::logger('Remote feedback')->info($css_content);
+  return $file_path;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function remote_feedback_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Check if the form is the specific webform to add styles and scripts.
+  if (strpos($form_id, "yg_remote_feedback_form") !== FALSE) {
+    // Load current webform entity and its third party settings.
+    $webform = \Drupal::entityTypeManager()->getStorage('webform')->load($form['#webform_id']);
+    $third_party_settings = $webform->getThirdPartySettings('color_settings');
+
+    // Attach variables to the form.
+    $form['#attached']['drupalSettings']['color_settings'] = $third_party_settings;
+
+    // Attach library to the form.
+    $form['#attached']['library'][] = 'remote_feedback_form/feedback-form';
+  }
+
+  if ($form_id == 'webform_handler_form' && $form['#webform_id'] == 'yg_remote_feedback_form') {
+    $form['#validate'][] = 'remote_feedback_form_validate_url_post';
+    $form['settings']['completed']['completed_url']['#description'] = $form['settings']['completed']['completed_url']['#description'] . '. ' . t('Consider only HTTPS protocol will be allowed.');
+  }
+
+  if ($form_id == 'webform_settings_form' && $form['general_settings']['id']['#value'] == 'yg_remote_feedback_form') {
+    $form['#validate'][] = '_remote_feedback_form_submit_clear_cache';
+  }
+
+}
+
+/**
+ * Custom validation function for the Remote post form.
+ */
+function remote_feedback_form_validate_url_post(&$form, FormStateInterface $form_state) {
+  $url_value = $form_state->getValue('completed_url');
+  // Check if the URL does not start with "https://".
+  if (!preg_match('/^https:\/\//', $url_value)) {
+    // Set an error message if validation fails.
+    $form_state->setErrorByName('completed_url', t('The URL must start with "https://".'));
+  }
+}
+
+/**
+ * Implements hook_webform_third_party_settings_form_alter().
+ */
+function remote_feedback_form_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  // Load the current webform entity and its third-party settings.
+  $webform = $form_state->getFormObject()->getEntity();
+  $webform_id = $webform->id();
+  if ($webform_id == 'yg_remote_feedback_form') {
+    $third_party_settings = $webform->getThirdPartySettings('color_settings');
+
+    // Add form fields for color settings.
+    $form['third_party_settings']['color_settings']['color_icon_active'] = [
+      '#type' => 'color',
+      '#title' => t('Color Icons (Active)'),
+      '#default_value' => $third_party_settings['color_icon_active'] ?? '#00454E',
+    ];
+
+    $form['third_party_settings']['color_settings']['color_icon_inactive'] = [
+      '#type' => 'color',
+      '#title' => t('Color Icons (Inactive)'),
+      '#default_value' => $third_party_settings['color_icon_inactive'] ?? '#b2b3b2',
+    ];
+
+    $form['third_party_settings']['color_settings']['color_button_active'] = [
+      '#type' => 'color',
+      '#title' => t('Color button (Active)'),
+      '#default_value' => $third_party_settings['color_button_active'] ?? '#00454E',
+    ];
+
+    $form['third_party_settings']['color_settings']['color_button_inactive'] = [
+      '#type' => 'color',
+      '#title' => t('Color button (Inactive)'),
+      '#default_value' => $third_party_settings['color_button_inactive'] ?? '#00616D',
+    ];
+  }
+}
+
+function _remote_feedback_form_submit_clear_cache(&$form, FormStateInterface $form_state) {
+  if (isset($form['third_party_settings']['color_settings'])) {
+    // Generate dynamic CSS file.
+    $third_party_settings = $form['third_party_settings']['color_settings'];
+    $third_party = [];
+    $third_party['color_button_inactive'] = isset($third_party_settings['color_button_inactive']['#value']) ? $third_party_settings['color_button_inactive']['#value'] : $third_party_settings['color_button_inactive']['#default_value'];
+    $third_party['color_button_active'] = isset($third_party_settings['color_button_active']['#value']) ? $third_party_settings['color_button_active']['#value'] : $third_party_settings['color_button_active']['#default_value'];
+    $third_party['color_icon_active'] = isset($third_party_settings['color_icon_active']['#value']) ? $third_party_settings['color_icon_active']['#value'] : $third_party_settings['color_icon_active']['#default_value'];
+    $third_party['color_icon_inactive'] = isset($third_party_settings['color_icon_inactive']['#value']) ? $third_party_settings['color_icon_inactive']['#value'] : $third_party_settings['color_icon_inactive']['#default_value'];
+    remote_feedback_form_generate_dynamic_css($third_party);
+  }
+}

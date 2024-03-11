@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\webform\Entity\Webform;
+
+/**
+ * Implements hook_uninstall().
+ */
+function remote_feedback_form_uninstall() {
+  // Delete the webform by its ID.
+  $webform_id = 'yg_remote_feedback_form';
+
+  // Load the webform by its ID.
+  $webform = Webform::load($webform_id);
+  if ($webform) {
+    // The webform exists, delete it.
+    $webform->delete();
+    \Drupal::messenger()->addMessage('The webform ' . $webform_id . ' has been deleted.', 'status');
+  }
+  else {
+    // The webform does not exist.
+    \Drupal::messenger()->addMessage('The webform ' . $webform_id . ' does not exist.', 'warning');
+  }
+
+  // Delete the configuration created by the module.
+  \Drupal::configFactory()->getEditable('field.storage.block_content.field_webform')->delete();
+  \Drupal::configFactory()->getEditable('webform.webform.yg_remote_feedback_form')->delete();
+  \Drupal::configFactory()->getEditable('field.field.block_content.form.field_webform')->delete();
+  \Drupal::configFactory()->getEditable('block_content.type.form')->delete();
+  \Drupal::configFactory()->getEditable('core.entity_view_display.block_content.form.default')->delete();
+  \Drupal::configFactory()->getEditable('core.entity_form_display.block_content.form.default')->delete();
+}

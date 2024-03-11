@@ -1,0 +1,99 @@
+
+form.webform-submission-yg-remote-feedback-form-form {
+	padding-top: 10px;
+    border-top: 1px solid #d4c7cf;
+}
+form.webform-submission-yg-remote-feedback-form-form label{
+    font-family: Montserrat,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 1.4375;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #000;
+    float: none;
+    max-width: 100%;
+    margin-bottom: 5px;   
+}
+
+form.webform-submission-yg-remote-feedback-form-form label.form-required:after{
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZmlsbD0iI0VFMDAwMCIgIGQ9Ik0wLDcuNTYybDEuMTE0LTMuNDM4YzIuNTY1LDAuOTA2LDQuNDMsMS42ODgsNS41OSwyLjM1QzYuMzk4LDMuNTUzLDYuMjM3LDEuNTQ0LDYuMjIsMC40NDdoMy41MTEgYy0wLjA1LDEuNTk3LTAuMjM0LDMuNi0wLjU1OCw2LjAwM2MxLjY2NC0wLjgzOCwzLjU2Ni0xLjYxMyw1LjcxNC0yLjMyNUwxNiw3LjU2MmMtMi4wNSwwLjY3OC00LjA2LDEuMTMxLTYuMDI4LDEuMzU2IGMwLjk4NCwwLjg1NiwyLjM3MiwyLjM4MSw0LjE2Niw0LjU3NWwtMi45MDYsMi4wNTljLTAuOTM1LTEuMjc0LTIuMDQxLTMuMDA5LTMuMzE2LTUuMjA2Yy0xLjE5NCwyLjI3NS0yLjI0NCw0LjAxMy0zLjE0Nyw1LjIwNiBsLTIuODU2LTIuMDU5YzEuODcyLTIuMzA3LDMuMjExLTMuODMyLDQuMDE3LTQuNTc1QzMuODQ5LDguNTE2LDEuODcyLDguMDYyLDAsNy41NjIiLz48L3N2Zz4K) !important;
+    background-size: 10px 7px;
+    content: "";
+    display: inline-block;
+    vertical-align: super;
+    line-height: 1;
+    height: 7px;
+    width: 10px;
+}
+
+
+form.webform-submission-yg-remote-feedback-form-form  .yes-no-options{
+	display: flex;
+}
+
+form.webform-submission-yg-remote-feedback-form-form  .yes-no-options > .js-webform-radios .form-type-boolean,
+form.webform-submission-yg-remote-feedback-form-form  .yes-no-options > .js-webform-radios .form-type-boolean,
+form.webform-submission-yg-remote-feedback-form-form  .yes-no-options > .js-webform-radios{
+	display: inline-block;
+}
+
+form.webform-submission-yg-remote-feedback-form-form label.form-item__label.option{
+	font-family: FontAwesome;
+    font-size: 38px;
+    color: var(--color-icon-inactive); 
+}
+
+
+form.webform-submission-yg-remote-feedback-form-form  div.form-type-textarea > div > textarea{
+  border: 1px solid #ccc;
+  border-radius: 4px 4px 0 0;
+  height: auto;
+  display: block;
+  margin: 0;
+  width: 100%;
+  box-shadow: none;
+  background-color: #f1f1f1;
+  color: #555;
+}
+form.webform-submission-yg-remote-feedback-form-form  div.form-type-textarea > div > textarea:focus
+{
+	outline-width: 2px;
+	outline-style: solid;
+}
+
+
+.webform-submission-yg-remote-feedback-form-form .webform-button--submit,
+.webform-submission-yg-remote-feedback-form-form .webform-button--submit:focus,
+.webform-submission-yg-remote-feedback-form-form input#edit-actions-submit{
+    padding: 15px 30px;
+    color: #fff;
+    background-color: var(--color-button-inactive);
+    border-color: var(--color-button-inactive);
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    font-size: 16px;
+    line-height: 1.4375;
+    border-radius: 4px;
+    height: auto;
+    min-height: 36px;
+    min-width: 36px;
+    white-space: normal;
+    font-family: Montserrat,Helvetica,Arial,sans-serif;
+}
+.webform-submission-yg-remote-feedback-form-form .webform-button--submit:active,
+.webform-submission-yg-remote-feedback-form-form .webform-button--submit:hover,
+.webform-submission-yg-remote-feedback-form-form input#edit-actions-submit:active,
+.webform-submission-yg-remote-feedback-form-form input#edit-actions-submit:hover{
+    color: #fff;
+    background-color: var(--color-button-active);
+    border-color: var(--color-button-active);
+    border: 1px solid transparent;
+    font-weight: 400;
+}
